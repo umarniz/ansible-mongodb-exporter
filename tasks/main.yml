@@ -16,8 +16,6 @@
 - name: install dependencies for compiling Prometheus source code
   include: install-compile-tools.yml
 
-
-
 - name: create Prometheus group
   group: name=prometheus state=present
 
@@ -47,20 +45,38 @@
   include: install-gosu.yml
   when: not mongodb_exporter_use_systemd|bool
 
+- name: install software-properties-common to add new apt-repositories
+  apt: name=software-properties-common state=present
 
+- name: add glide repository
+  command: add-apt-repository ppa:masterminds/glide
+
+- name: install glide
+  apt: name=glide state=present update_cache=true
+
+#- apt_repository:
+#  repo: ppa:masterminds/glide
+#  state: present  
+
+
+- name: clean existing directories
+  file: path={{ prometheus_gopath }}/src/github.com/dcu/mongodb_exporter state=absent
+
+- name: clone mongodb_exporter sourcecode
+  command: git clone https://github.com/dcu/mongodb_exporter.git {{ prometheus_gopath }}/src/github.com/dcu/mongodb_exporter
 
 - name: build mongodb_exporter source code
-  command: go get -u github.com/dcu/mongodb_exporter
+  command: make build
   args:
+    chdir: "{{ prometheus_gopath }}/src/github.com/dcu/mongodb_exporter"
     creates: "{{ prometheus_gopath }}/bin/mongodb_exporter"
   environment:
-    GO15VENDOREXPERIMENT: 1
     GOROOT: "{{ prometheus_goroot }}"
     GOPATH: "{{ prometheus_gopath }}"
     PATH: "{{ ansible_env.PATH }}:{{ prometheus_goroot }}/bin:{{ prometheus_gopath }}/bin"
 
 - name: copy the built mongodb_exporter to the install path
-  command: "cp  {{ prometheus_gopath }}/bin/mongodb_exporter  {{ prometheus_install_path }}"
+  command: "cp  {{ prometheus_gopath }}/src/github.com/dcu/mongodb_exporter/mongodb_exporter  {{ prometheus_install_path }}"
   args:
     creates: "{{ prometheus_install_path }}/mongodb_exporter"
 
@@ -84,4 +100,4 @@
 
 
 - name: set INIT status
-  service: name=mongodb_exporter enabled=yes
+  service: name=mongodb_exporter enabled=yes state=started
