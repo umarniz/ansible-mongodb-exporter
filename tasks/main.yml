@@ -96,6 +96,8 @@
 
 - name: copy systemd config to server
   template: src="../templates/mongodb_exporter.service.j2"  dest="/lib/systemd/system/mongodb_exporter.service"
+  notify:
+    - restart mongodb_exporter
   when: mongodb_exporter_use_systemd
 
 
