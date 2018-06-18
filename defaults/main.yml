@@ -30,7 +30,7 @@ mongodb_exporter_git_url:  "https://github.com/dcu/mongodb_exporter.git"
 mongodb_exporter_src_path: "{{ prometheus_gopath }}/src/github.com/dcu/mongodb_exporter"
 
 mongodb_exporter_mongodb_uri:    "mongodb://localhost:27017"
-mongodb_exporter_flags: "-stderrthreshold=ERROR"
+mongodb_exporter_flags: ""
 
 
 #
