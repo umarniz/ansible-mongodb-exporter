@@ -14,4 +14,4 @@ Type=simple
 User={{ prometheus_user }}
 Group={{ prometheus_group }}
 
-ExecStart={{ prometheus_install_path }}/mongodb_exporter  -logtostderr=true  -mongodb.uri={{ mongodb_exporter_mongodb_uri }}
+ExecStart={{ prometheus_install_path }}/mongodb_exporter  -logtostderr=true  -mongodb.uri={{ mongodb_exporter_mongodb_uri }} {{ mongodb_exporter_flags }}

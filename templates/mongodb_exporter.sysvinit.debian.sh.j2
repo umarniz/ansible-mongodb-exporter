@@ -31,7 +31,7 @@ GOSU=/usr/local/bin/gosu
 
 
 DAEMON_OPTS=
-DAEMON_OPTS="$DAEMON_OPTS  -logtostderr=true  -mongodb.uri={{ mongodb_exporter_mongodb_uri }}"
+DAEMON_OPTS="$DAEMON_OPTS  -logtostderr=true  -mongodb.uri={{ mongodb_exporter_mongodb_uri }} {{ mongodb_exporter_flags }}"
 
 
 
