@@ -49,7 +49,7 @@
   apt: name=software-properties-common state=present
 
 - name: add glide repository
-  command: add-apt-repository ppa:masterminds/glide
+  command: add-apt-repository -y ppa:masterminds/glide
 
 - name: install glide
   apt: name=glide state=present update_cache=true
